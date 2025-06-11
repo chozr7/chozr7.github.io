@@ -34,16 +34,7 @@ function useNextSeoProps() {
 }
 
 const config: DocsThemeConfig = {
-    logo: (
-        <div
-            style={{
-                paddingLeft: '28px',
-                background: `url(https://users-cdn.versescripts.net/26f8b7e84a37d879bbf9d98289238c20.png) no-repeat left`,
-                backgroundSize: '24px',
-                fontWeight: 'bold',
-            }}
-        ><span style={{ color: 'rgb(0, 122, 238)' }}>en</span> Development</div>
-    ),
+    logo: <img src="https://users-cdn.versescripts.net/26f8b7e84a37d879bbf9d98289238c20.png" width={36} height={36} alt="Zen Development" />,
     chat: { link: 'https://discord.gg/chozr' },
     project: { link: 'https://github.com/chozr7/chozr7.github.io' },
     docsRepositoryBase: 'https://github.com/chozr7/chozr7.github.io',
