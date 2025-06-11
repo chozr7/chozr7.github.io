@@ -1,5 +1,5 @@
 import React from 'react'
-import { DocsThemeConfig, useConfig } from 'nextra-theme-docs'
+import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router';
 
 const siteName = 'Zen Development';
@@ -7,9 +7,7 @@ const siteUrl = 'https://chozr7.github.io';
 
 function useHead() {
     const { asPath } = useRouter();
-    const { frontMatter, title } = useConfig();
-    const url = `${siteUrl}${asPath}`;
-    const description = frontMatter.description || 'Documentation for Zen Development\'s resources for FiveM';
+    const description = 'Documentation for Zen Development\'s resources for FiveM';
 
     return (
         <>
@@ -17,9 +15,10 @@ function useHead() {
             <link rel="icon" type="image/png" href="https://users-cdn.versescripts.net/26f8b7e84a37d879bbf9d98289238c20.png"/>
             <meta httpEquiv='Content-Language' content='en' />
             <meta name='description' content={description} />
-            <meta name='og:title' content={title} />
+            <meta name='og:title' content={siteName} />
             <meta name='og:description' content={description} />
-            <meta name='og:url' content={url} />
+            <meta name='og:url' content={`${siteUrl}${asPath}`} />
+            <meta name='og:image' content={`https://users-cdn.versescripts.net/15a189b7c308d1018b1f6beeb2f4595c.png`} />
         </>
     );
 }
@@ -39,7 +38,7 @@ const config: DocsThemeConfig = {
         <div
             style={{
                 paddingLeft: '28px',
-                background: `url(/logo.svg) no-repeat left`,
+                background: `url(https://users-cdn.versescripts.net/26f8b7e84a37d879bbf9d98289238c20.png) no-repeat left`,
                 backgroundSize: '24px',
                 fontWeight: 'bold',
             }}
