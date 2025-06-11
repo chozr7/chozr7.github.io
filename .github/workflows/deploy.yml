@@ -38,7 +38,14 @@ jobs:
 
       - name: Copy exported site into main branch
         run: |
+          # rsync may return 24 when files disappear between listing and sync; treat it as success
+          set +e
           rsync -av --delete --exclude='.git' --exclude='.github' "${{ steps.export-dir.outputs.export_dir }}/" ./
+          rsync_status=$?
+          if [ "$rsync_status" != "0" ] && [ "$rsync_status" != "24" ]; then
+            exit $rsync_status
+          fi
+          set -e
           rm -rf "${{ steps.export-dir.outputs.export_dir }}"
 
       - name: Commit and push if changes
