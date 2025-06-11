@@ -25,10 +25,21 @@ jobs:
       - name: Build static site (Next.js)
         run: npm run build
 
+      - name: Detect static export directory
+        id: export-dir
+        run: |
+          if [ -d "out" ]; then
+            echo "export_dir=out" >> "$GITHUB_OUTPUT"
+          elif [ -d "dist" ]; then
+            echo "export_dir=dist" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Static export directory not found (expected 'out' or 'dist')." && exit 1
+          fi
+
       - name: Copy exported site into main branch
         run: |
-          rsync -av --delete --exclude='.git' --exclude='.github' ./out/ ./
-          rm -rf out
+          rsync -av --delete --exclude='.git' --exclude='.github' "${{ steps.export-dir.outputs.export_dir }}/" ./
+          rm -rf "${{ steps.export-dir.outputs.export_dir }}"
 
       - name: Commit and push if changes
         run: |
