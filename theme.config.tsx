@@ -18,7 +18,6 @@ function useHead() {
             <meta name='og:title' content={siteName} />
             <meta name='og:description' content={description} />
             <meta name='og:url' content={`${siteUrl}${asPath}`} />
-            <meta name='og:image' content={`https://users-cdn.versescripts.net/15a189b7c308d1018b1f6beeb2f4595c.png`} />
         </>
     );
 }
