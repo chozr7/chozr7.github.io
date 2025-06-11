@@ -5,10 +5,10 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  build-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -18,6 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
         run: npm install --no-audit --prefer-offline
@@ -25,33 +26,12 @@ jobs:
       - name: Build static site (Next.js)
         run: npm run build
 
-      - name: Detect static export directory
-        id: export-dir
-        run: |
-          if [ -d "out" ]; then
-            echo "export_dir=out" >> "$GITHUB_OUTPUT"
-          elif [ -d "dist" ]; then
-            echo "export_dir=dist" >> "$GITHUB_OUTPUT"
-          else
-            echo "::error::Static export directory not found (expected 'out' or 'dist')." && exit 1
-          fi
-
-      - name: Copy exported site into main branch
-        run: |
-          # rsync may return 24 when files disappear between listing and sync; treat it as success
-          set +e
-          rsync -av --delete --exclude='.git' --exclude='.github' "${{ steps.export-dir.outputs.export_dir }}/" ./
-          rsync_status=$?
-          if [ "$rsync_status" != "0" ] && [ "$rsync_status" != "24" ]; then
-            exit $rsync_status
-          fi
-          set -e
-          rm -rf "${{ steps.export-dir.outputs.export_dir }}"
-
-      - name: Commit and push if changes
-        run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name  "github-actions"
-          git add -A
-          git diff --cached --quiet || git commit -m "Deploy static site"
-          git push
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
