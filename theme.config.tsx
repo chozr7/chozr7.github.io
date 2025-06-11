@@ -7,7 +7,7 @@ const siteUrl = 'https://chozr7.github.io';
 
 function useHead() {
     const { asPath } = useRouter();
-    const description = 'Documentation for Zen Development\'s resources for FiveM';
+    const description = `Documentation for ${siteName}\'s resources for FiveM`;
 
     return (
         <>
