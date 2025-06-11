@@ -1,0 +1,8 @@
+{
+  "index": "Introduction",
+  "core": {
+    "type": "doc",
+    "title": "Core"
+  },
+  "components": "Components"
+}
